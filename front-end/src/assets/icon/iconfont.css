@@ -1,0 +1,79 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 2391490 */
+  src: url('iconfont.woff2?t=1638100448396') format('woff2'),
+       url('iconfont.woff?t=1638100448396') format('woff'),
+       url('iconfont.ttf?t=1638100448396') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.Ktubiao-zhuzhuangtu:before {
+  content: "\e67e";
+}
+
+.Kbingtu:before {
+  content: "\e902";
+}
+
+.Kzhexiantu-xianxing:before {
+  content: "\e904";
+}
+
+.Kxialaanniu:before {
+  content: "\e663";
+}
+
+.Kdanxuan:before {
+  content: "\e622";
+}
+
+.Kwenzi:before {
+  content: "\e883";
+}
+
+.Kduoxuanxuanzhong:before {
+  content: "\e61f";
+}
+
+.Kguanbi:before {
+  content: "\e6be";
+}
+
+.Kchexiao:before {
+  content: "\e7c1";
+}
+
+.Kzhongzuo:before {
+  content: "\e7ef";
+}
+
+.Kbutton:before {
+  content: "\e6e3";
+}
+
+.Kshurukuang:before {
+  content: "\e603";
+}
+
+.Kdiv:before {
+  content: "\e689";
+}
+
+.Kfangda:before {
+  content: "\e634";
+}
+
+.Ksuoxiao:before {
+  content: "\e63e";
+}
+
+.Ktupian:before {
+  content: "\e600";
+}
+
