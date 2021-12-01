@@ -30,9 +30,7 @@ function csv2VChartJson(csvArray){
 export default {
   name: 'k-charts',
   props: {
-    dataset: PropTypes.colors({
-      label: '颜色面板',
-      visible: false,
+    dataset: PropTypes.excel({
       defaultValue: () => [
         ['日期', '销售量'],
         ['1月1日', 123],
@@ -42,6 +40,10 @@ export default {
         ['1月5日', 3123],
         ['1月6日', 7123]
       ]
+    }),
+    interfaceName: PropTypes.input({
+      label: '数据源方案三',
+      defaultValue: '',
     }),
     type: PropTypes.input({
       label: '类型',
@@ -60,7 +62,7 @@ export default {
     })
   },
   mounted() {
-    const resizeObserver = new ResizeObserver(entries => {
+    const resizeObserver = new ResizeObserver(() => {
       // for (let entry of entries) {
       //   console.log(entry.target.style.width)
       // }
@@ -68,9 +70,21 @@ export default {
     })
 
     resizeObserver.observe(this.$el)
+
+  },
+  methods: {
+    getData() {
+      let chartData = []
+      if (this.interfaceName) {
+        chartData = csv2VChartJson(this.dataset)
+      } else {
+        chartData = csv2VChartJson(this.dataset)
+      }
+      return chartData
+    }
   },
   render() {
-    const chartData = csv2VChartJson(this.dataset)
+    const chartData = this.getData(this.dataset)
     switch (this.type) {
       case 'line':
         return <VeLine class='kCharts' ref='kCharts' width='100%' height='100%' data={chartData} colors={this.colors} />

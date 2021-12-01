@@ -1,5 +1,5 @@
 export default {
-  name: 'k-upload',
+  name: 'k-upload-editor',
   props: {
     value: String,
     default: '',

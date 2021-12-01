@@ -1,5 +1,5 @@
 export default {
-  name: 'k-radio',
+  name: 'k-radio-editor',
   props: {
     options: {
       type: Array,

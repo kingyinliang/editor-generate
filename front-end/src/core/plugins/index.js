@@ -2,6 +2,7 @@ import Vue from 'vue'
 
 import KBackground from './k-background'
 import KPicture from './k-picture'
+import KDiv from './k-div'
 import KInput from './k-input'
 import KVideo from './k-video'
 import KButton from './k-button'
@@ -30,6 +31,17 @@ export const pluginsList = [
     component: KPicture,
     visible: true,
     name: KPicture.name
+  },
+  {
+    title: '容器',
+    i18nTitle: {
+      'en-US': 'div',
+      'zh-CN': '容器'
+    },
+    icon: 'Kdiv',
+    component: KDiv,
+    visible: true,
+    name: KDiv.name
   },
   {
     title: '输入框',

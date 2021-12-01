@@ -1,5 +1,5 @@
 export default {
-  name: 'k-select',
+  name: 'k-select-editor',
   props: {
     options: {
       type: Array,

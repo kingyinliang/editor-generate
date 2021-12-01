@@ -1,11 +1,13 @@
 import Vue from 'vue'
 
-import KUpload from './k-upload'
-import KSelect from './k-select'
-import KRadio from './k-radio'
-import ColorsPanel from './colors-panel'
+import KUploadEditor from './k-upload-editor'
+import KSelectEditor from './k-select-editor'
+import KRadioEditor from './k-radio-editor'
+import KColorsPanelEditor from './k-colors-panel-editor'
+import KExcelEditor from './k-excel-editor'
 
-Vue.component(KUpload.name, KUpload)
-Vue.component(KSelect.name, KSelect)
-Vue.component(KRadio.name, KRadio)
-Vue.component(ColorsPanel.name, ColorsPanel)
+Vue.component(KUploadEditor.name, KUploadEditor)
+Vue.component(KSelectEditor.name, KSelectEditor)
+Vue.component(KRadioEditor.name, KRadioEditor)
+Vue.component(KColorsPanelEditor.name, KColorsPanelEditor)
+Vue.component(KExcelEditor.name, KExcelEditor)

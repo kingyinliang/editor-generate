@@ -32,6 +32,7 @@ export default {
 
   render(){
     const canEdit = this.canEdit && this.editorMode === 'edit'
+    console.log(this.text)
     const previewText = <div class="ql-snow"><div domPropsInnerHTML={this.text} class="k-text ql-editor ql-container"></div></div>
     const style = {
       position: 'relative',
@@ -82,8 +83,10 @@ export default {
                 },
                 theme: 'snow'
               }}
-              onChange={({ html }) => {
+              onChange={({ quill, html, text }) => {
+                console.log(quill);
                 console.log(html);
+                console.log(text);
                 this.$emit('input', {
                   value: html,
                   pluginName: 'k-text'

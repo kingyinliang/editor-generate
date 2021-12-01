@@ -73,6 +73,12 @@ const CoreEditor = {
     ]),
     handlePreview () { this.previewDialogVisible = true },
     save(){
+      console.log(this.work.pages[0].elements[1].pluginProps.text);
+      const a = JSON.stringify(this.work)
+      const b = JSON.parse(a)
+      console.log(a);
+      console.log(b);
+      console.log(b.pages[0].elements[1].pluginProps.text);
       updateWorks(this.work).then(({data}) => {
         if(data.code === 200) {
           this.$message({

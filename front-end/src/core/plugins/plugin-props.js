@@ -22,7 +22,7 @@ export default {
     default: defaultValue,
     visible,
     editor: {
-      type: 'k-radio',
+      type: 'k-radio-editor',
       label,
       props: {
         options,
@@ -34,7 +34,7 @@ export default {
     default: defaultValue,
     visible,
     editor: {
-      type: 'k-select',
+      type: 'k-select-editor',
       label,
       props: {
         options,
@@ -46,7 +46,7 @@ export default {
     default: defaultValue,
     visible,
     editor: {
-      type: 'k-upload',
+      type: 'k-upload-editor',
       label
     }
   }),
@@ -68,7 +68,7 @@ export default {
     default: defaultValue,
     visible,
     editor: {
-      type: 'colors-panel',
+      type: 'k-colors-panel-editor',
       label,
       props: {
         size: 'mini',
@@ -84,6 +84,15 @@ export default {
     editor: {
       type: 'el-switch',
       label
+    }
+  }),
+  excel: ({ label = '数据源', defaultValue = [], visible = true } = {}) => ({
+    type: Array,
+    default: defaultValue,
+    visible,
+    editor: {
+      type: 'k-excel-editor',
+      label,
     }
   }),
 }

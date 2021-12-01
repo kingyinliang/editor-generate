@@ -1,5 +1,5 @@
 export default {
-  name: 'colors-panel',
+  name: 'k-colors-panel-editor',
   props: {
     value: {
       type: Array,

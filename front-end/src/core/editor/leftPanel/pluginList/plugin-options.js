@@ -17,16 +17,16 @@ export default {
       //   visible: true,
       //   name: 'k-button'
       // },
-      {
-        title: '容器',
-        i18nTitle: {
-          'en-US': 'div',
-          'zh-CN': '容器'
-        },
-        icon: 'Kdiv',
-        visible: true,
-        name: 'k-div'
-      },
+      // {
+      //   title: '容器',
+      //   i18nTitle: {
+      //     'en-US': 'div',
+      //     'zh-CN': '容器'
+      //   },
+      //   icon: 'Kdiv',
+      //   visible: true,
+      //   name: 'k-div'
+      // },
     ]
   }),
   mounted(){
