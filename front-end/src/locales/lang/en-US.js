@@ -33,7 +33,8 @@ export default {
       components: 'Components',
       pages: 'Pages',
       templates: 'Templates',
-      dialog: 'Dialog'
+      dialog: 'Dialog',
+      dataSource: 'DataSource',
     },
     pageManager: {
       title: 'Page {index}',

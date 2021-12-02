@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { cloneDeep } from 'lodash'
 import Element from 'core/models/element.js'
 import Http from './axios'
+import { DS } from '@/store/modules/editor/data-source'
 
 const DESIGN_DRAFT_WIDTH = 375
 const disabledPluginsForEditMode = ['k-input', 'k-button']
@@ -21,6 +22,32 @@ export function px2Rem (px) {
 export function parsePx (px, isRem = false) {
   if (isRem) return px2Rem(px)
   return `${px}px`
+}
+
+export function getVMVal (vm, exp) {
+  let val = vm
+  exp = exp.split('.')
+  exp.forEach(k => {
+    try {
+      val = val[k]
+    } catch (error) {
+      val = undefined
+    }
+  })
+  return val
+}
+
+export function bindData (obj) {
+  const reg = /\{\{(.*?)\}\}/g
+  const newObj = JSON.parse(JSON.stringify(obj).replace(reg, (match, exp) => {
+    exp = exp.trim().replace(/\[(\w+)\]/g, '.$1')
+    exp = exp.replace(/^\./, '')
+    if (/DS\./.test(exp)) {
+      return getVMVal(DS, exp)
+    }
+    return exp
+  }))
+  return newObj
 }
 
 export function getStyle({position = 'static', isRem = false} = {}, element) {
@@ -49,6 +76,7 @@ export function getStyle({position = 'static', isRem = false} = {}, element) {
     position
   }
 }
+
 export function elementClone(element, zindex) {
   return new Element({
     name: element.name,
@@ -63,14 +91,15 @@ export function elementClone(element, zindex) {
 }
 
 export function getProps ({ mode = 'edit' } = {}, element) {
+  const pluginProps = mode === 'preview' ? bindData(element.pluginProps) : element.pluginProps
   if (mode === 'edit') {
     return {
-      ...element.pluginProps,
+      ...pluginProps,
       disabled: disabledPluginsForEditMode.includes(element.name) && mode === 'edit'
     }
   } else {
     return {
-      ...element.pluginProps,
+      ...pluginProps,
     }
   }
 }

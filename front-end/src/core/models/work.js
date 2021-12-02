@@ -1,4 +1,5 @@
 import Page from './page'
+import DataSource from './data-source'
 
 class Work {
   constructor(work = {}) {
@@ -9,6 +10,7 @@ class Work {
     this.dialog = work.dialog || []
     this.height = work.height || 667
     this.is_template = false
+    this.datasources = (work.datasources || []).map(item => new DataSource(item))
   }
 }
 

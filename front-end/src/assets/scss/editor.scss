@@ -32,6 +32,9 @@
 }
 .left_tab{
   height: 100%;
+  .el-tabs__item{
+    padding: 0 10px 0 0;
+  }
   .el-tabs__content{
     height: calc(100vh - 135px);
   }
@@ -308,5 +311,14 @@
     width: 375px;
     transform: scale(0.5);
     left: -93.75px;
+  }
+}
+.dataSource__card{
+  margin-bottom: 10px;
+  .el-card__header{
+    padding: 5px;
+  }
+  .el-card__body{
+    padding: 5px 10px;
   }
 }

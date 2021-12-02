@@ -33,7 +33,8 @@ export default {
       components: '组件列表',
       pages: '页面管理',
       templates: '模板',
-      dialog: '弹窗'
+      dialog: '弹窗',
+      dataSource: '数据源'
     },
     pageManager: {
       title: '第{index}页面',

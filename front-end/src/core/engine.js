@@ -2,6 +2,7 @@ import Vue from 'vue'
 import PreviewCanvas from 'core/preview'
 import DialogCanvas from 'core/preview/dialog_canvas.js'
 import { pluginsList } from 'core/plugins'
+import DataSource from 'core/models/data-source'
 import KComponents from 'k-generate-components'
 
 import '@/assets/scss/index.scss';
@@ -12,6 +13,9 @@ import 'animate.css'
 
 const Engine = {
   name: 'Engine',
+  created() {
+    DataSource.dispatchRequest(window.__work)
+  },
   render(){
     const work = window.__work
     return (
