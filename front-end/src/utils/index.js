@@ -25,6 +25,7 @@ export function parsePx (px, isRem = false) {
 }
 
 export function getVMVal (vm, exp) {
+  console.log(exp);
   let val = vm
   exp = exp.split('.')
   exp.forEach(k => {
@@ -36,7 +37,9 @@ export function getVMVal (vm, exp) {
   })
   return val
 }
-
+function getHandlerFn (exp) {
+  return new Function(`return function handler(DS) {\nconsole.log(DS);return ${exp}\n}`)()
+}
 export function bindData (obj) {
   const reg = /\{\{(.*?)\}\}/g
   const newObj = JSON.parse(JSON.stringify(obj).replace(reg, (match, exp) => {

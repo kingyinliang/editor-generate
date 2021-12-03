@@ -13,10 +13,9 @@
     </el-form-item>
     <el-form-item label="触发方式">
       <el-radio-group v-model="form.refreshType">
-        <el-radio label="once">单次触发</el-radio>
-        <el-radio label="fixed-frequency">定时更新</el-radio>
+        <el-radio v-for="(item, index) in refreshType" :key="index" :label="item.value">{{item.label}}</el-radio>
       </el-radio-group>
-      <el-input-number v-model="form.refreshInterval" :disabled="form.refreshType !== 'fixed-frequency'" style="margin-left: 20px"/>
+      <el-input-number v-model="form.refreshInterval" :disabled="form.refreshType !== 'fixed'" style="margin-left: 20px"/>
     </el-form-item>
     <el-collapse accordion>
       <el-collapse-item title="更多配置" name="0">
@@ -29,6 +28,7 @@
 </template>
 
 <script>
+  import { REFRESH_ENUM } from './config'
   export default {
     name: 'http',
     props: {
@@ -44,9 +44,10 @@
           url: '',
           refreshType: 'once',
           refreshInterval: '',
-          handler: `function handler(deps) {\ndebugger\nreturn deps.data\n}`,
+          handler: `function handler(deps) {\nreturn deps.data\n}`,
           ...this.dataSource
         },
+        refreshType: REFRESH_ENUM.options,
         rules: {
           name: [
             {required: true, message: '请输入名称', trigger: 'blur'}

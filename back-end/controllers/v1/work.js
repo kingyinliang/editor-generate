@@ -34,7 +34,9 @@ module.exports = {
         } else {
             let works = await db.query('select * from works')
             works.forEach(item => {
-                item.pages = JSON.parse(item.pages)
+                let pages = item.pages || '{}'
+                pages = pages.replace(/(&slash);/g, '\\')
+                item.pages = JSON.parse(pages)
             })
             ctx.success({
                 works
@@ -69,8 +71,13 @@ module.exports = {
         if (ctx.query.id) {
             let work = await db.query(`select * from works where id=${ctx.query.id}`)
             if (work.length) {
-                work[0].pages = JSON.parse(work[0].pages)
-                work[0].dialog = JSON.parse(work[0].dialog)
+              let pages = work[0].pages || '{}'
+              let datasources = work[0].datasources || '[]'
+              pages = pages.replace(/(&slash);/g, '\\')
+              datasources = datasources.replace(/(&slash);/g, '\\')
+              work[0].pages = JSON.parse(pages)
+              work[0].datasources = JSON.parse(datasources)
+              work[0].dialog = JSON.parse(work[0].dialog)
                 await ctx.render('index',{
                     work: work[0]
                 })

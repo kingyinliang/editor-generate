@@ -15,6 +15,7 @@
         </el-form-item>
       </el-collapse-item>
     </el-collapse>
+    <div>{{form.name}}</div>
   </el-form>
 </template>
 
@@ -31,7 +32,7 @@ export default {
     return {
       form: {
         name: '',
-        handler: `function handler(deps) {\ndebugger\nreturn deps\n}`,
+        handler: `function handler(deps) {\nreturn deps.data\n}`,
         ...this.dataSource
       },
       rules: {
