@@ -56,6 +56,7 @@ export default {
             const data = {
               props,
               style: {
+                ...element.getStyle({ position: 'static' }),
                 width: '100%',
                 height: '100%'
               },

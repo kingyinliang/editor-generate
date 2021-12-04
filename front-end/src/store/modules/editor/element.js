@@ -5,6 +5,9 @@ export const actions = {
   setEditingElement({ commit }, payload) {
     commit('setEditingElement', payload)
   },
+  setElementPosition ({ commit }, payload) {
+    commit('setElementCommonStyle', payload)
+  },
   setElementCommonStyle ({ commit }, payload) {
     commit('setElementCommonStyle', payload)
   },

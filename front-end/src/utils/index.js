@@ -136,7 +136,8 @@ export function getAttrs (element) {
 }
 
 export function getPreviewData({ position = 'static', isRem = false, mode = 'preview' } = {}, element) {
-  const style = getStyle({position, isRem}, element)
+  // const style = getStyle({position, isRem}, element)
+  const style = element.getStyle({position, isRem})
   const data = {
     style,
     props: getProps({ mode }, element),

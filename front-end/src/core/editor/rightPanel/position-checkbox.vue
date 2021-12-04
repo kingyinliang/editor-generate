@@ -2,15 +2,15 @@
   <div class="position-checkbox">
     <template v-if="boxModelPart">
       <div class="flex">
-        <a-checkbox @change="onCheckboxChange" :checked="isChecked" size="small">
-        </a-checkbox>
+        <el-checkbox @change="onCheckboxChange" :checked="isChecked" size="small">
+        </el-checkbox>
         <div class="label">{{label}}</div>
       </div>
 
     </template>
     <template v-if="boxModelPart && isChecked">
-      <el-input-number style="width:70px" :value="value" :min="0" @change="onInputNumberChange" size="small" />
-      <el-select :value="unit" style="width:70px" @change="onUnitChange" size="small" >
+      <el-input type="number" style="width:60px" :value="value" :min="0" @input="onInputNumberChange" size="mini" />
+      <el-select :value="unit" style="width:60px" @change="onUnitChange" size="mini" >
         <el-option v-for="(item,index) in unitList" :key="index" :value="item">
           {{ item }}
         </el-option>
@@ -65,7 +65,7 @@
         this.changeCommonStyle(unit, 'unit')
       },
       onCheckboxChange (e) {
-        this.isChecked = e.target.checked
+        this.isChecked = e
       },
       onInputNumberChange (value) {
         this.changeCommonStyle(value)

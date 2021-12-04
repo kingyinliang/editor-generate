@@ -1,5 +1,6 @@
-import {mapState} from "vuex";
+import { mapState,mapActions } from 'vuex';
 import {getVM} from '@/utils'
+import BoxModelEditor from './box-model'
 
 export default {
   name: 'PropEditor',
@@ -8,6 +9,18 @@ export default {
       type: Object,
       default: () => null
     }
+  },
+  data: () => ({
+    loadCustomEditorFlag: false,
+    editorPositionConfig: [
+      { type: 'el-input', label: '上', key: 'top' },
+      { type: 'el-input', label: '左', key: 'left' },
+      { type: 'el-input', label: '宽', key: 'width' },
+      { type: 'el-input', label: '高', key: 'height' }
+    ]
+  }),
+  components: {
+    BoxModelEditor
   },
   computed: {
     ...mapState('editor', {
@@ -18,18 +31,62 @@ export default {
     }
   },
   methods: {
-    renderEditorPositionConfig() {}
+    ...mapActions('editor', [
+      'setEditingElement',
+      'setElementPosition'
+    ]),
+    renderEditorPositionConfig(h) {
+      const _this = this
+      const commonStyle = this.editingElement.commonStyle
+      return <el-form inline={true} size='mini'>
+        {
+          this.editorPositionConfig.map(item => {
+            const { type, label, key } = item
+            const data = {
+              style: {
+                width: '100px'
+              },
+              props: {
+                type: 'number',
+                value: commonStyle[key],
+                placeholder: `请输入${key}`,
+                formatter: value => `${label} ${value}`
+              },
+              on: {
+                input (e) {
+                  const value = e
+                  _this.onPositionChange(key, value)
+                }
+              }
+            }
+            return (
+              <el-form-item label={label}>
+                {
+                  h(type, data)
+                }
+              </el-form-item>
+            )
+          })
+        }
+      </el-form>
+    },
+    onPositionChange (key, value) {
+      this.setElementPosition({
+        [key]: Number(value)
+      })
+    }
   },
   render(h) {
     if (!this.editingElement) return (<div>请选择一个元素</div>)
     const vm = getVM(this.editingElement.name)
     const props = vm.$options.props
     return (
-      <el-collapse value={[0,1]}>
+      <el-collapse value={[1]}>
         <el-collapse-item name={0} title="通用样式">
           {
             this.stateEditingElement ? this.renderEditorPositionConfig(h) : ''
           }
+          <BoxModelEditor />
         </el-collapse-item>
         <el-collapse-item name={1} title="属性设置">
           <el-form className="right_prop_form" size="mini" inline={false}>

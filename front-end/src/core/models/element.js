@@ -11,7 +11,69 @@ const defaultStyle = {
   textAlign: 'center',
   color: '#000000',
   backgroundColor: 'rgba(255, 255, 255, 0)',
-  fontSize: 14
+  fontSize: 14,
+  margin: {
+    top: {
+      value: 0,
+      unit: 'px'
+    },
+    right: {
+      value: 0,
+      unit: 'px'
+    },
+    bottom: {
+      value: 0,
+      unit: 'px'
+    },
+    left: {
+      value: 0,
+      unit: 'px'
+    }
+  },
+  padding: {
+    top: {
+      value: 0,
+      unit: 'px'
+    },
+    right: {
+      value: 0,
+      unit: 'px'
+    },
+    bottom: {
+      value: 0,
+      unit: 'px'
+    },
+    left: {
+      value: 0,
+      unit: 'px'
+    }
+  },
+  border: {
+    top: {
+      value: 0,
+      unit: 'px'
+    },
+    right: {
+      value: 0,
+      unit: 'px'
+    },
+    bottom: {
+      value: 0,
+      unit: 'px'
+    },
+    left: {
+      value: 0,
+      unit: 'px'
+    },
+    color: {
+      value: '#000'
+    },
+    style: {
+      value: 'solid'
+    }
+  },
+  'border-style': 'solid',
+  boxModelPart: ''
 }
 
 class Element {
@@ -23,8 +85,25 @@ class Element {
     this.animations = ele.animations || []
   }
 
+  packPosData (obj, prefix) {
+    let init = {}
+    Object.keys(obj).forEach(key => {
+      init[prefix + '-' + key] = obj[key].value + (obj[key].unit || '')
+    })
+    return init
+  }
+
+  packBorderData () {
+    const { top, right, bottom, left, color, style } = this.commonStyle.border
+    return {
+      'border-width': `${top.value}${top.unit} ${right.value}${right.unit} ${bottom.value}${bottom.unit} ${left.value}${left.unit} `,
+      'border-style': style.value,
+      'border-color': color.value
+    }
+  }
+
   getStyle({position = 'static', isRem = false} = {}) {
-    if (this.name === 'lbp-background') {
+    if (this.name === 'k-background') {
       return {
         width: '100%',
         height: '100%'
@@ -32,6 +111,12 @@ class Element {
     }
     const pluginProps = this.pluginProps
     const commonStyle = this.commonStyle
+    const { margin, padding } = commonStyle
+    const boxModel = {
+      ...this.packPosData(margin, 'margin'),
+      ...this.packPosData(padding, 'padding'),
+      ...this.packBorderData()
+    }
     let style = {
       top: parsePx(pluginProps.top || commonStyle.top, isRem),
       left: parsePx(pluginProps.left || commonStyle.left, isRem),
@@ -42,6 +127,7 @@ class Element {
       // backgroundColor: pluginProps.backgroundColor || commonStyle.backgroundColor,
       textAlign: pluginProps.textAlign || commonStyle.textAlign,
       'z-index': commonStyle.zindex,
+      ...boxModel,
       position
     }
     return style
