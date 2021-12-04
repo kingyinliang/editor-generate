@@ -25,7 +25,6 @@ export function parsePx (px, isRem = false) {
 }
 
 export function getVMVal (vm, exp) {
-  console.log(exp);
   let val = vm
   exp = exp.split('.')
   exp.forEach(k => {
@@ -37,19 +36,34 @@ export function getVMVal (vm, exp) {
   })
   return val
 }
-function getHandlerFn (exp) {
-  return new Function(`return function handler(DS) {\nconsole.log(DS);return ${exp}\n}`)()
+function _getVMVal (vm, exp) {
+  try {
+    const _getVMValFn = new  Function('DS', `return ${exp}`)
+    return _getVMValFn(vm)
+  } catch (e) {
+    return 'error'
+  }
 }
 export function bindData (obj) {
+  console.log(obj);
   const reg = /\{\{(.*?)\}\}/g
-  const newObj = JSON.parse(JSON.stringify(obj).replace(reg, (match, exp) => {
-    exp = exp.trim().replace(/\[(\w+)\]/g, '.$1')
-    exp = exp.replace(/^\./, '')
+  const objStr = JSON.stringify(obj)
+  const newObjStr = objStr.replace(reg, (match, exp) => {
+    // exp = exp.trim().replace(/\[(\w+)\]/g, '.$1')
+    exp = exp.trim().replace(/^\./, '')
     if (/DS\./.test(exp)) {
-      return getVMVal(DS, exp)
+      // return getVMVal(DS, exp)
+      let value = _getVMVal(DS.DS, exp)
+      if (typeof value !== 'string') {
+        value = JSON.stringify(value)
+      }
+      // eslint-disable-next-line
+      const str = value.replace(/\"/g, '\\"')
+      return str
     }
     return exp
-  }))
+  })
+  const newObj = JSON.parse(newObjStr)
   return newObj
 }
 

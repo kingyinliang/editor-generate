@@ -59,6 +59,11 @@ export default {
         '#87a997', '#d49ea2', '#5b4947',
         '#7ba3a8'
       ]
+    }),
+    editorMode: PropTypes.input({
+      defaultValue: 'preview', // 可选值: preview/edit
+      label: '模式',
+      visible: false
     })
   },
   mounted() {
@@ -76,7 +81,7 @@ export default {
     getData() {
       let chartData = []
       if (this.interfaceName) {
-        chartData = csv2VChartJson(this.dataset)
+        chartData = this.editorMode === 'preview'?csv2VChartJson(this.dataset):[]
       } else {
         chartData = csv2VChartJson(this.dataset)
       }

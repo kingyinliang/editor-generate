@@ -113,13 +113,17 @@ export default {
     },
     // 表单
     renderForm () {
-      switch (this.activeDataSource.type) {
-        case DS_ENUM.code2value.HTTP_API:
-          return <HttpForm ref="form" dataSource={this.activeDataSource} type={this.activeDataSource.type} />
-        case DS_ENUM.code2value.STATIC:
-          return <StaticForm ref="form" dataSource={this.activeDataSource} type={this.activeDataSource.type} />
-        case DS_ENUM.code2value.CSV:
-          return <CsvForm ref="form" dataSource={this.activeDataSource} type={this.activeDataSource.type} />
+      if (this.dialog) {
+        switch (this.activeDataSource.type) {
+          case DS_ENUM.code2value.HTTP_API:
+            return <HttpForm ref="form" dataSource={this.activeDataSource} type={this.activeDataSource.type} />
+          case DS_ENUM.code2value.STATIC:
+            return <StaticForm ref="form" dataSource={this.activeDataSource} type={this.activeDataSource.type} />
+          case DS_ENUM.code2value.CSV:
+            return <CsvForm ref="form" dataSource={this.activeDataSource} type={this.activeDataSource.type} />
+        }
+      } else {
+        return ''
       }
     },
     submitForm() {

@@ -55,7 +55,7 @@ export default {
     default: defaultValue,
     visible,
     editor: {
-      type: 'el-color-picker',
+      type: 'k-color-picker',
       label,
       props: {
         size: 'mini',

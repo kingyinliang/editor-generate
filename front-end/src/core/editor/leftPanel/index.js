@@ -18,7 +18,7 @@ export default {
             <PluginList />
           </el-tab-pane>
           <el-tab-pane label={this.$t('editor.sidebar.pages')} name="page-manager">
-            <pageManager />
+            {this.activeName === 'page-manager'? <pageManager /> : ''}
           </el-tab-pane>
           <el-tab-pane label={this.$t('editor.sidebar.dialog')} name="page-dialog">
             <dialogManager />

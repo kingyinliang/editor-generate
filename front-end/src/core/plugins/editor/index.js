@@ -5,6 +5,7 @@ import KSelectEditor from './k-select-editor'
 import KRadioEditor from './k-radio-editor'
 import KColorsPanelEditor from './k-colors-panel-editor'
 import KExcelEditor from './k-excel-editor'
+import KColorPicker from './k-color-picker'
 
 import VueCodemirror from 'vue-codemirror'
 import 'codemirror/mode/javascript/javascript.js'
@@ -27,3 +28,4 @@ Vue.component(KSelectEditor.name, KSelectEditor)
 Vue.component(KRadioEditor.name, KRadioEditor)
 Vue.component(KColorsPanelEditor.name, KColorsPanelEditor)
 Vue.component(KExcelEditor.name, KExcelEditor)
+Vue.component(KColorPicker.name, KColorPicker)

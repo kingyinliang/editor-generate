@@ -58228,9 +58228,7 @@ var DS = vue__WEBPACK_IMPORTED_MODULE_3___default.a.observable({
 });
 var actions = {
   dataSourceManager: function dataSourceManager(_ref, _ref2) {
-    var commit = _ref.commit,
-        dispatch = _ref.dispatch,
-        state = _ref.state;
+    var state = _ref.state;
     var type = _ref2.type,
         value = _ref2.value;
     var dataSourceOrigin = value;
@@ -94437,11 +94435,11 @@ var es_object_to_string = __webpack_require__("d3b7");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom-collections.for-each.js
 var web_dom_collections_for_each = __webpack_require__("159b");
 
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.replace.js
-var es_string_replace = __webpack_require__("5319");
-
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.json.stringify.js
 var es_json_stringify = __webpack_require__("e9c4");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.replace.js
+var es_string_replace = __webpack_require__("5319");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.trim.js
 var es_string_trim = __webpack_require__("498a");
@@ -94587,7 +94585,8 @@ function getVMVal(vm, exp) {
 }
 function bindData(obj) {
   var reg = /\{\{(.*?)\}\}/g;
-  var newObj = JSON.parse(JSON.stringify(obj).replace(reg, function (match, exp) {
+  var objStr = JSON.stringify(obj);
+  var newObjStr = objStr.replace(reg, function (match, exp) {
     exp = exp.trim().replace(/\[(\w+)\]/g, '.$1');
     exp = exp.replace(/^\./, '');
 
@@ -94596,7 +94595,11 @@ function bindData(obj) {
     }
 
     return exp;
-  }));
+  });
+  console.log(objStr, 'objStr');
+  console.log(newObjStr, 'newObjStr');
+  var newObj = JSON.parse(newObjStr);
+  console.log(newObj, 'newObj');
   return newObj;
 }
 function getStyle() {
@@ -103420,7 +103423,6 @@ var text_overwrite_quil_snow_theme = __webpack_require__("2bca");
 
     var h = arguments[0];
     var canEdit = this.canEdit && this.editorMode === 'edit';
-    console.log(this.text);
     var previewText = h("div", {
       "class": "ql-snow"
     }, [h("div", {
@@ -103493,12 +103495,7 @@ var text_overwrite_quil_snow_theme = __webpack_require__("2bca");
       },
       "on": {
         "change": function change(_ref) {
-          var quill = _ref.quill,
-              html = _ref.html,
-              text = _ref.text;
-          console.log(quill);
-          console.log(html);
-          console.log(text);
+          var html = _ref.html;
 
           _this.$emit('input', {
             value: html,
@@ -103602,6 +103599,12 @@ function csv2VChartJson(csvArray) {
       defaultValue: function defaultValue() {
         return ['#19d4ae', '#5ab1ef', '#fa6e86', '#ffb980', '#0067a6', '#c4b4e4', '#d87a80', '#9cbbff', '#d9d0c7', '#87a997', '#d49ea2', '#5b4947', '#7ba3a8'];
       }
+    }),
+    editorMode: plugin_props["a" /* default */].input({
+      defaultValue: 'edit',
+      // 可选值: preview/edit
+      label: '模式',
+      visible: false
     })
   },
   mounted: function mounted() {
@@ -103617,10 +103620,13 @@ function csv2VChartJson(csvArray) {
   },
   methods: {
     getData: function getData() {
+      console.log(this.interfaceName);
       var chartData = [];
 
       if (this.interfaceName) {
-        chartData = csv2VChartJson(this.dataset);
+        console.log(this.interfaceName);
+        console.log(this.editorMode);
+        chartData = this.editorMode === 'preview' ? csv2VChartJson(this.interfaceName) : [];
       } else {
         chartData = csv2VChartJson(this.dataset);
       }
