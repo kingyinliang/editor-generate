@@ -36,6 +36,9 @@
   import elementUi from 'element-ui'
   import pageView from "core/editor/leftPanel/pageView"
   import LoadPluginsMixin from 'core/plugins'
+  import Work from 'core/models/work'
+  import Element from 'core/models/element'
+  import Page from 'core/models/page'
 
   export default {
     name: "list",
@@ -51,7 +54,15 @@
     mounted() {
       console.log(elementUi.install);
       getWork().then(({ data }) => {
-        this.worklist = data.data.works
+        let works = data.data.works
+        works = works.map(work => {
+          work.pages = work.pages.map(page => {
+            page.elements = page.elements.map(element => new Element(element))
+            return new Page(page)
+          })
+          return new Work(work)
+        })
+        this.worklist = works
       })
     },
     methods: {

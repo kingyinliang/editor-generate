@@ -1,15 +1,21 @@
 const db = require('../../db')
 
-/* 用正则表达式实现html编码（转义）（另一种写法） */
-const html2Escape = (str) => {
-  const arrEntiries = { '\\': '&quot;' }
-  return str.replace(/[<>&"]/g, (c) => { return arrEntiries[c] })
+const escapeReg = {'\\': '&slash;', '\'': '&squot;'}
+// 出库转义
+const escapeStr = (str) => {
+  for (const escapeRegKey in escapeReg) {
+    const reg = eval(`/${escapeReg[escapeRegKey]}/g`)
+    str = str.replace(reg, () => { return `${escapeRegKey}` })
+  }
+  return str
 }
-
-/* 用正则表达式实现html解码（反转义）（另一种写法） */
-const escape2Html = (str) => {
-  const arrEntiries = { '&lt;': '<', '&gt;': '>', '&nbsp': ' ', '&amp;': '&', '&quot;': '"' }
-  return str.replace(/(&lt|&gt|&nbsp|&amp|&quot);/ig, (c) => { return arrEntiries[c] })
+// 进库前转义
+const strEscape = (str) => {
+  for (const escapeRegKey in escapeReg) {
+    const reg = eval(`/[\\${escapeRegKey}]/g`)
+    str = str.replace(reg, () => { return escapeReg[escapeRegKey] })
+  }
+  return str
 }
 
 module.exports = {
@@ -17,13 +23,9 @@ module.exports = {
       if (ctx.query.id) {
             let work = await db.query(`select * from works where id=${ctx.query.id}`)
             if (work.length) {
-              let pages = work[0].pages || '{}'
-              let datasources = work[0].datasources || '[]'
-              pages = pages.replace(/(&slash);/g, '\\')
-              datasources = datasources.replace(/(&slash);/g, '\\')
-              work[0].pages = JSON.parse(pages)
-              work[0].datasources = JSON.parse(datasources)
-              work[0].dialog = JSON.parse(work[0].dialog)
+              work[0].pages = JSON.parse(escapeStr(work[0].pages || '[]'))
+              work[0].datasources = JSON.parse(escapeStr(work[0].datasources || '[]'))
+              work[0].dialog = JSON.parse(escapeStr(work[0].dialog || '[]'))
               ctx.success({
                   work: work[0]
               })
@@ -33,10 +35,10 @@ module.exports = {
             }
         } else {
             let works = await db.query('select * from works')
-            works.forEach(item => {
-                let pages = item.pages || '{}'
-                pages = pages.replace(/(&slash);/g, '\\')
-                item.pages = JSON.parse(pages)
+            works.forEach(work => {
+                work.pages = JSON.parse(escapeStr(work.pages || '[]'))
+                work.datasources = JSON.parse(escapeStr(work.datasources || '[]'))
+                work.dialog = JSON.parse(escapeStr(work.dialog || '[]'))
             })
             ctx.success({
                 works
@@ -55,10 +57,8 @@ module.exports = {
     },
     update: async ctx => {
         const params = ctx.request.body
-        let pages = JSON.stringify(params.pages)
-        let datasources = JSON.stringify(params.datasources)
-        pages = pages.replace(/[\\]/g, '&slash;')
-        datasources = datasources.replace(/[\\]/g, '&slash;')
+        let pages = strEscape(JSON.stringify(params.pages))
+        let datasources = strEscape(JSON.stringify(params.datasources))
         const sql = `update works set
         title='${params.title}',is_template=${params.is_template},description='${params.description}',dialog='${JSON.stringify(params.dialog)}',pages='${pages}',datasources='${datasources}'
         where id=${params.id}`
@@ -71,13 +71,9 @@ module.exports = {
         if (ctx.query.id) {
             let work = await db.query(`select * from works where id=${ctx.query.id}`)
             if (work.length) {
-              let pages = work[0].pages || '{}'
-              let datasources = work[0].datasources || '[]'
-              pages = pages.replace(/(&slash);/g, '\\')
-              datasources = datasources.replace(/(&slash);/g, '\\')
-              work[0].pages = JSON.parse(pages)
-              work[0].datasources = JSON.parse(datasources)
-              work[0].dialog = JSON.parse(work[0].dialog)
+              work[0].pages = JSON.parse(escapeStr(work[0].pages || '[]'))
+              work[0].datasources = JSON.parse(escapeStr(work[0].datasources || '[]'))
+              work[0].dialog = JSON.parse(escapeStr(work[0].dialog || '[]'))
                 await ctx.render('index',{
                     work: work[0]
                 })

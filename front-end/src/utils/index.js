@@ -45,7 +45,6 @@ function _getVMVal (vm, exp) {
   }
 }
 export function bindData (obj) {
-  console.log(obj);
   const reg = /\{\{(.*?)\}\}/g
   const objStr = JSON.stringify(obj)
   const newObjStr = objStr.replace(reg, (match, exp) => {
@@ -57,9 +56,12 @@ export function bindData (obj) {
       if (typeof value !== 'string') {
         value = JSON.stringify(value)
       }
-      // eslint-disable-next-line
-      const str = value.replace(/\"/g, '\\"')
-      return str
+      if (value) {
+        // eslint-disable-next-line
+        return value.replace(/\"/g, '\\"')
+      } else {
+        return value
+      }
     }
     return exp
   })

@@ -1,6 +1,7 @@
 import PropEditor from './prop'
 import AnimationEditor from './animation'
 import PageEditor from './page'
+import ScriptEditor from './script'
 
 export default {
   name: 'EditorRightPanel',
@@ -22,6 +23,9 @@ export default {
           </el-tab-pane>
           <el-tab-pane label={this.$t('editor.editPanel.tab.animation')} name="animation">
             <AnimationEditor/>
+          </el-tab-pane>
+          <el-tab-pane label={this.$t('editor.editPanel.tab.script')} name="script">
+            <ScriptEditor/>
           </el-tab-pane>
           <el-tab-pane label={this.$t('editor.editPanel.tab.page')} name="page">
             <PageEditor/>

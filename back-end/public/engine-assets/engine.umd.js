@@ -32691,7 +32691,7 @@ module.exports = _default;
       default: defaultValue,
       visible: visible,
       editor: {
-        type: 'el-color-picker',
+        type: 'k-color-picker',
         label: label,
         props: {
           size: 'mini',
@@ -75843,9 +75843,6 @@ hiddenKeys[HIDDEN] = true;
 
 "use strict";
 
-// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js
-var objectSpread2 = __webpack_require__("5530");
-
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.js
 var es_symbol = __webpack_require__("a4d3");
 
@@ -75890,6 +75887,9 @@ function _typeof(obj) {
 
   return _typeof(obj);
 }
+// EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/objectSpread2.js
+var objectSpread2 = __webpack_require__("5530");
+
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/classCallCheck.js
 var classCallCheck = __webpack_require__("d4ec");
 
@@ -75908,10 +75908,14 @@ var web_dom_collections_for_each = __webpack_require__("159b");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.keys.js
 var es_object_keys = __webpack_require__("b64b");
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
+var es_array_concat = __webpack_require__("99af");
+
 // EXTERNAL MODULE: ./src/utils/index.js + 1 modules
 var utils = __webpack_require__("ed08");
 
 // CONCATENATED MODULE: ./src/core/models/element.js
+
 
 
 
@@ -75936,7 +75940,69 @@ var defaultStyle = {
   textAlign: 'center',
   color: '#000000',
   backgroundColor: 'rgba(255, 255, 255, 0)',
-  fontSize: 14
+  fontSize: 14,
+  margin: {
+    top: {
+      value: 0,
+      unit: 'px'
+    },
+    right: {
+      value: 0,
+      unit: 'px'
+    },
+    bottom: {
+      value: 0,
+      unit: 'px'
+    },
+    left: {
+      value: 0,
+      unit: 'px'
+    }
+  },
+  padding: {
+    top: {
+      value: 0,
+      unit: 'px'
+    },
+    right: {
+      value: 0,
+      unit: 'px'
+    },
+    bottom: {
+      value: 0,
+      unit: 'px'
+    },
+    left: {
+      value: 0,
+      unit: 'px'
+    }
+  },
+  border: {
+    top: {
+      value: 0,
+      unit: 'px'
+    },
+    right: {
+      value: 0,
+      unit: 'px'
+    },
+    bottom: {
+      value: 0,
+      unit: 'px'
+    },
+    left: {
+      value: 0,
+      unit: 'px'
+    },
+    color: {
+      value: '#000'
+    },
+    style: {
+      value: 'solid'
+    }
+  },
+  'border-style': 'solid',
+  boxModelPart: ''
 };
 
 var element_Element = /*#__PURE__*/function () {
@@ -75951,6 +76017,31 @@ var element_Element = /*#__PURE__*/function () {
   }
 
   Object(createClass["a" /* default */])(Element, [{
+    key: "packPosData",
+    value: function packPosData(obj, prefix) {
+      var init = {};
+      Object.keys(obj).forEach(function (key) {
+        init[prefix + '-' + key] = obj[key].value + (obj[key].unit || '');
+      });
+      return init;
+    }
+  }, {
+    key: "packBorderData",
+    value: function packBorderData() {
+      var _this$commonStyle$bor = this.commonStyle.border,
+          top = _this$commonStyle$bor.top,
+          right = _this$commonStyle$bor.right,
+          bottom = _this$commonStyle$bor.bottom,
+          left = _this$commonStyle$bor.left,
+          color = _this$commonStyle$bor.color,
+          style = _this$commonStyle$bor.style;
+      return {
+        'border-width': "".concat(top.value).concat(top.unit, " ").concat(right.value).concat(right.unit, " ").concat(bottom.value).concat(bottom.unit, " ").concat(left.value).concat(left.unit, " "),
+        'border-style': style.value,
+        'border-color': color.value
+      };
+    }
+  }, {
     key: "getStyle",
     value: function getStyle() {
       var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
@@ -75959,7 +76050,7 @@ var element_Element = /*#__PURE__*/function () {
           _ref$isRem = _ref.isRem,
           isRem = _ref$isRem === void 0 ? false : _ref$isRem;
 
-      if (this.name === 'lbp-background') {
+      if (this.name === 'k-background') {
         return {
           width: '100%',
           height: '100%'
@@ -75968,7 +76059,12 @@ var element_Element = /*#__PURE__*/function () {
 
       var pluginProps = this.pluginProps;
       var commonStyle = this.commonStyle;
-      var style = {
+      var margin = commonStyle.margin,
+          padding = commonStyle.padding;
+
+      var boxModel = Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({}, this.packPosData(margin, 'margin')), this.packPosData(padding, 'padding')), this.packBorderData());
+
+      var style = Object(objectSpread2["a" /* default */])(Object(objectSpread2["a" /* default */])({
         top: Object(utils["e" /* parsePx */])(pluginProps.top || commonStyle.top, isRem),
         left: Object(utils["e" /* parsePx */])(pluginProps.left || commonStyle.left, isRem),
         width: Object(utils["e" /* parsePx */])(pluginProps.width || commonStyle.width, isRem),
@@ -75977,9 +76073,11 @@ var element_Element = /*#__PURE__*/function () {
         color: pluginProps.color || commonStyle.color,
         // backgroundColor: pluginProps.backgroundColor || commonStyle.backgroundColor,
         textAlign: pluginProps.textAlign || commonStyle.textAlign,
-        'z-index': commonStyle.zindex,
+        'z-index': commonStyle.zindex
+      }, boxModel), {}, {
         position: position
-      };
+      });
+
       return style;
     }
   }, {
@@ -94592,23 +94690,41 @@ function getVMVal(vm, exp) {
   });
   return val;
 }
+
+function _getVMVal(vm, exp) {
+  try {
+    var _getVMValFn = new Function('DS', "return ".concat(exp));
+
+    return _getVMValFn(vm);
+  } catch (e) {
+    return 'error';
+  }
+}
+
 function bindData(obj) {
+  console.log(obj);
   var reg = /\{\{(.*?)\}\}/g;
   var objStr = JSON.stringify(obj);
   var newObjStr = objStr.replace(reg, function (match, exp) {
-    exp = exp.trim().replace(/\[(\w+)\]/g, '.$1');
-    exp = exp.replace(/^\./, '');
+    // exp = exp.trim().replace(/\[(\w+)\]/g, '.$1')
+    exp = exp.trim().replace(/^\./, '');
 
     if (/DS\./.test(exp)) {
-      return getVMVal(data_source["a" /* DS */], exp);
+      // return getVMVal(DS, exp)
+      var value = _getVMVal(data_source["a" /* DS */].DS, exp);
+
+      if (typeof value !== 'string') {
+        value = JSON.stringify(value);
+      } // eslint-disable-next-line
+
+
+      var str = value.replace(/\"/g, '\\"');
+      return str;
     }
 
     return exp;
   });
-  console.log(objStr, 'objStr');
-  console.log(newObjStr, 'newObjStr');
   var newObj = JSON.parse(newObjStr);
-  console.log(newObj, 'newObj');
   return newObj;
 }
 function getStyle() {
@@ -94700,10 +94816,11 @@ function getPreviewData() {
       mode = _ref3$mode === void 0 ? 'preview' : _ref3$mode;
 
   var element = arguments.length > 1 ? arguments[1] : undefined;
-  var style = getStyle({
+  // const style = getStyle({position, isRem}, element)
+  var style = element.getStyle({
     position: position,
     isRem: isRem
-  }, element);
+  });
   var data = {
     style: style,
     props: getProps({
@@ -103610,7 +103727,7 @@ function csv2VChartJson(csvArray) {
       }
     }),
     editorMode: plugin_props["a" /* default */].input({
-      defaultValue: 'edit',
+      defaultValue: 'preview',
       // 可选值: preview/edit
       label: '模式',
       visible: false
@@ -103629,13 +103746,10 @@ function csv2VChartJson(csvArray) {
   },
   methods: {
     getData: function getData() {
-      console.log(this.interfaceName);
       var chartData = [];
 
       if (this.interfaceName) {
-        console.log(this.interfaceName);
-        console.log(this.editorMode);
-        chartData = this.editorMode === 'preview' ? csv2VChartJson(this.interfaceName) : [];
+        chartData = this.editorMode === 'preview' ? csv2VChartJson(this.dataset) : [];
       } else {
         chartData = csv2VChartJson(this.dataset);
       }

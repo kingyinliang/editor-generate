@@ -94,7 +94,7 @@ class Element {
   }
 
   packBorderData () {
-    const { top, right, bottom, left, color, style } = this.commonStyle.border
+    const { top, right, bottom, left, color, style } = this.commonStyle.border || defaultStyle.border
     return {
       'border-width': `${top.value}${top.unit} ${right.value}${right.unit} ${bottom.value}${bottom.unit} ${left.value}${left.unit} `,
       'border-style': style.value,
@@ -111,7 +111,8 @@ class Element {
     }
     const pluginProps = this.pluginProps
     const commonStyle = this.commonStyle
-    const { margin, padding } = commonStyle
+    const margin = this.commonStyle.margin || defaultStyle.margin
+    const padding = this.commonStyle.padding || defaultStyle.padding
     const boxModel = {
       ...this.packPosData(margin, 'margin'),
       ...this.packPosData(padding, 'padding'),
