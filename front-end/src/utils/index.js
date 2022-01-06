@@ -5,7 +5,6 @@ import Http from './axios'
 import { DS } from '@/store/modules/editor/data-source'
 
 const DESIGN_DRAFT_WIDTH = 375
-const disabledPluginsForEditMode = ['k-input', 'k-button']
 
 export function getVM (pluginName) {
   const Ctor = Vue.component(pluginName)
@@ -69,33 +68,6 @@ export function bindData (obj) {
   return newObj
 }
 
-export function getStyle({position = 'static', isRem = false} = {}, element) {
-  const userAgent = navigator.userAgent;
-  if (!!userAgent.match(/AppleWebKit.*Mobile.*/)||userAgent.indexOf('iPad') > -1) {
-    isRem = true
-  }
-  if (element.name === 'k-background') {
-    return {
-      width: '100%',
-      height: '100%'
-    }
-  }
-  const pluginProps = element.pluginProps
-  const commonStyle = element.commonStyle
-  return {
-    top: parsePx(pluginProps.top || commonStyle.top, isRem),
-    left: parsePx(pluginProps.left || commonStyle.left, isRem),
-    width: parsePx(pluginProps.width || commonStyle.width, isRem),
-    height: parsePx(pluginProps.height || commonStyle.height, isRem),
-    fontSize: parsePx(pluginProps.fontSize || commonStyle.fontSize, isRem),
-    color: pluginProps.color || commonStyle.color,
-    // backgroundColor: pluginProps.backgroundColor || commonStyle.backgroundColor,
-    textAlign: pluginProps.textAlign || commonStyle.textAlign,
-    'z-index': commonStyle.zindex,
-    position
-  }
-}
-
 export function elementClone(element, zindex) {
   return new Element({
     name: element.name,
@@ -107,45 +79,6 @@ export function elementClone(element, zindex) {
       left: element.commonStyle.left + 20
     }
   })
-}
-
-export function getProps ({ mode = 'edit' } = {}, element) {
-  const pluginProps = mode === 'preview' ? bindData(element.pluginProps) : element.pluginProps
-  if (mode === 'edit') {
-    return {
-      ...pluginProps,
-      disabled: disabledPluginsForEditMode.includes(element.name) && mode === 'edit'
-    }
-  } else {
-    return {
-      ...pluginProps,
-    }
-  }
-}
-
-export function getAttrs (element) {
-  const attrs = {
-    'data-uuid': element.uuid
-  }
-
-  if (element.animations && element.animations.length > 0) {
-    const animation = element.animations[0]
-    attrs['data-swiper-animation'] = animation.type // "fadeIn"
-    attrs['data-duration'] = `${animation.duration}s` // ".5s"
-    attrs['data-delay'] = `${animation.delay}s` // "1s"
-  }
-  return attrs
-}
-
-export function getPreviewData({ position = 'static', isRem = false, mode = 'preview' } = {}, element) {
-  // const style = getStyle({position, isRem}, element)
-  const style = element.getStyle({position, isRem})
-  const data = {
-    style,
-    props: getProps({ mode }, element),
-    attrs: getAttrs(element)
-  }
-  return data
 }
 
 export function postAxios({interfaceName='', formData} = {}) {

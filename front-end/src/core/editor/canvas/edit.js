@@ -1,7 +1,6 @@
 import {mapActions, mapState} from 'vuex'
 import Shape from './shape'
 import ContextMenu from './context_menu'
-import { getProps } from '@/utils'
 
 export default {
   name: 'edit',
@@ -48,11 +47,11 @@ export default {
             if (element.name === 'k-background') {
               return h('k-background', {
                 props: {
-                  ...getProps({}, element)
+                  ...element.getProps({})
                 },
               })
             }
-            const props = { ...getProps({}, element), editorMode: 'edit'}
+            const props = { ...element.getProps({}), editorMode: 'edit'}
             const data = {
               props,
               style: {
@@ -77,7 +76,7 @@ export default {
                 element={element}
                 active={this.editingElement === element}
               >
-                {h(element.name, data)}
+                {h(element.uuid, data)}
               </Shape>
             )
           })

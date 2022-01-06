@@ -1,5 +1,5 @@
 import ElementItem from "./element";
-import {getStyle, getPreviewData} from "@/utils";
+import {getStyle} from "@/utils";
 
 export default {
   name: 'DialogCanvas',
@@ -21,7 +21,7 @@ export default {
                   dialog.elements.map((el) => {
                     return (
                       <ElementItem element={el} style={getStyle({position: 'absolute'}, el)}>
-                        {h(el.name, getPreviewData({position: 'static'}, el))}
+                        {h(el.name, el.getPreviewData({position: 'static'}))}
                       </ElementItem>
                     )
                   })

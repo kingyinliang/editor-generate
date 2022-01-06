@@ -1,10 +1,17 @@
 import ElementItem from "./element";
-import {parsePx, getStyle, getPreviewData} from "@/utils";
+import {parsePx} from "@/utils";
 
 export default {
   name: 'Preview',
   props: ['elements', 'height'],
-  render(h) {
+  methods: {
+    genEventHandlers (element) {
+      const Ctor = this.$options.components[`${element.name}_${element.uuid}`]
+      return element.getEventHandlers(Ctor)
+    }
+  },
+  render() {
+    this.$createElement()
     const userAgent = navigator.userAgent;
     let isRem = false;
     if (!!userAgent.match(/AppleWebKit.*Mobile.*/)||userAgent.indexOf('iPad') > -1) {
@@ -19,9 +26,17 @@ export default {
       <div style={pageWrapperStyle}>
         {
           this.elements.map((el) => {
+            console.log(el);
             return (
-              <ElementItem element={el} style={getStyle({position: 'absolute'}, el)}>
-                {h(el.name, getPreviewData({position: 'static'}, el))}
+              <ElementItem element={el} style={el.getStyle({position: 'absolute'})}>
+                {
+                  this.$createElement(el.uuid,
+                    {
+                      ...el.getPreviewData({position: 'static'}),
+                      nativeOn: this.genEventHandlers(el)
+                    }
+                  )
+                }
               </ElementItem>
             )
           })

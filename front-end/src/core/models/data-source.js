@@ -23,7 +23,7 @@ export default class DataSource {
 
   _request () {
     const ds = this
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       ds.loading = true
       axios(ds.url).then(response => {
         ds.updated = +new Date()

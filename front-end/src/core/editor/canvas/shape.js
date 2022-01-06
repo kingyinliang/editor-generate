@@ -1,5 +1,4 @@
 import {mapActions} from 'vuex'
-import {getStyle} from '@/utils'
 import animationMixin from 'core/mixins/animation/index.js'
 
 const points = ['nw', 'ne', 'sw', 'se', 'w', 'e', 'n', 's']
@@ -117,11 +116,13 @@ export default {
     }
   },
   render() {
+    const { top, left, width, height, position } = this.element.getStyle({position: 'absolute'})
+    const zIndex = this.element.getStyle({position: 'absolute'})['z-index']
     return (
       <div
         onClick={this.divClick}
         onMousedown={this.handleMousedown}
-        style={getStyle({position: 'absolute'}, this.element)}
+        style={{top, left, width, height, position, 'z-index': zIndex}}
         class={{'shape_active': this.active}}
       >
         {this.active && points.map(item => {

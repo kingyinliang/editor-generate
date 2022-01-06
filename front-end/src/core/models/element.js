@@ -1,7 +1,8 @@
-import {parsePx} from '@/utils'
+import Vue from 'vue'
+import {parsePx,bindData} from '@/utils'
 
 const cloneObj = (value) => JSON.parse(JSON.stringify(value))
-
+const disabledPluginsForEditMode = ['k-input', 'k-button']
 const defaultStyle = {
   top: 100,
   left: 100,
@@ -80,10 +81,17 @@ const defaultStyle = {
 class Element {
   constructor(ele) {
     this.name = ele.name
-    this.uuid = ele.uuid || + new Date()
+    this.uuid = ele.uuid || ele.name + '_' + + new Date()
     this.pluginProps = this.getPluginProps(ele)
     this.commonStyle = this.getCommonStyle(ele)
     this.animations = ele.animations || []
+
+    this.registerGlobalComponent()
+  }
+
+  getEventHandlers() {
+    // const Ctor = Vue.component(`${this.name}_${this.uuid}`)
+    return []
   }
 
   packPosData (obj, prefix) {
@@ -134,6 +142,44 @@ class Element {
       position
     }
     return style
+  }
+
+  getProps ({ mode = 'edit' } = {}) {
+    const pluginProps = mode === 'preview' ? bindData(this.pluginProps) : this.pluginProps
+    if (mode === 'edit') {
+      return {
+        ...pluginProps,
+        disabled: disabledPluginsForEditMode.includes(this.name) && mode === 'edit'
+      }
+    } else {
+      return {
+        ...pluginProps,
+      }
+    }
+  }
+
+  getAttrs () {
+    const attrs = {
+      'data-uuid': this.uuid
+    }
+
+    if (this.animations && this.animations.length > 0) {
+      const animation = this.animations[0]
+      attrs['data-swiper-animation'] = animation.type // "fadeIn"
+      attrs['data-duration'] = `${animation.duration}s` // ".5s"
+      attrs['data-delay'] = `${animation.delay}s` // "1s"
+    }
+    return attrs
+  }
+
+  getPreviewData ({ position = 'static', isRem = false, mode = 'preview' } = {}) {
+    const data = {
+      style: this.getStyle({position, isRem}),
+      props: this.getProps({ mode }),
+      attrs: this.getAttrs(),
+      nativeOn: this.getEventHandlers()
+    }
+    return data
   }
 
   getCommonStyle(ele) {
@@ -204,6 +250,13 @@ class Element {
       }
     })
   }
+
+  registerGlobalComponent() {
+    const basePlugin = Vue.component(this.name)
+
+    Vue.component(this.uuid, basePlugin)
+  }
+
 }
 
 export default Element

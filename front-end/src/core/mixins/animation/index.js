@@ -1,5 +1,3 @@
-import {getStyle} from '@/utils'
-
 function getComputedCSSText (style) {
   let cssText = ''
   for (let attr in style) {
@@ -23,7 +21,7 @@ export default {
       let that = this
       let parentNode = this.$el
       let animIdx = 0
-      const oldStyle = getStyle({ position: 'absolute' }, that.element)
+      const oldStyle = that.element.getStyle({ position: 'absolute' })
       runAnimation()
 
       function runAnimation () {
