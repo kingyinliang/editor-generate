@@ -20,9 +20,6 @@ export default {
   props: {
     text: PropTypes.input({ label: '内容', defaultValue: '双击修改文字', visible: false }),
     backgroundColor: PropTypes.color({ label: '背景色', defaultValue: 'rgba(0, 0, 0, 0)' }),
-    borderWidth: PropTypes.number({ label: '边框宽度(px)', defaultValue: 0 }),
-    borderRadius: PropTypes.number({ label: '圆角(px)' }),
-    borderColor: PropTypes.color({ label: '边框颜色' }),
     editorMode: PropTypes.input({
       defaultValue: 'preview', // 可选值: preview/edit
       label: '模式',
@@ -38,9 +35,7 @@ export default {
       color: `${this.color} !important`,
       textDecoration: 'none',
       backgroundColor: this.backgroundColor || 'rgba(255, 255, 255, 0.2)',
-      lineHeight: `${this.lineHeight}em`,
-      border: `${this.borderWidth}px solid ${this.borderColor}`,
-      borderRadius: `${this.borderRadius}px`
+      lineHeight: `${this.lineHeight}em`
     }
     return (
       <div

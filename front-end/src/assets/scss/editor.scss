@@ -36,7 +36,7 @@
     padding: 0 10px 0 0;
   }
   .el-tabs__content{
-    height: calc(100vh - 135px);
+    height: calc(100vh - 80px);
   }
   .el-tab-pane{
     height: 100%;
@@ -44,7 +44,7 @@
   .page_manager{
     height: 100%;
     padding-bottom: 30px;
-    overflow: scroll;
+    overflow-y: scroll;
     .page_card_title{
       width: 100%;
       display: flex;
@@ -202,11 +202,23 @@
   }
 }
 // right
-.right_prop_form{
-  .el-input{
-    width: auto;
+.right{
+  .el-tabs__content{
+    height: calc(100vh - 115px);
+    overflow-y: scroll;
+  }
+  .right_prop_collapse{
+    .el-form-item {
+      margin-bottom: 8px;
+    }
+    .right_prop_form{
+      .el-input{
+        width: auto;
+      }
+    }
   }
 }
+
 // animation
 .animation_slider{
   display: flex;
@@ -321,4 +333,26 @@
   .el-card__body{
     padding: 5px 10px;
   }
+}
+
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+  width:8px;
+  height:8px;
+}
+::-webkit-scrollbar-button{
+  display: none;
+}
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+  border-radius:4px;
+}
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  border-radius:10px;
+  background:rgba(0,0,0,0.1);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+  background:rgba(255,0,0,0.4);
 }

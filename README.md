@@ -10,6 +10,10 @@ cd generate-back-end && yarn && yarn run dev
 ```
 ## mysql
 `generate-back-end/db/init.sql`初始化数据库
+链接不上数据库
+```shell
+ALTER user'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your password';
+```
 ## core
 核心在`front-end/src/core`下面，分为编辑器和引擎
 `front-end/src/core/plugins`为拖拽插件

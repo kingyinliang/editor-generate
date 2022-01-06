@@ -40,6 +40,7 @@ export const mutations = {
     vm.$options.shortcutProps = payload.shortcutProps
     vm.$options.dragStyle = payload.dragStyle
     vm.$options.zindex = state.editingPage.elements.length
+    vm.$options.commonStyle = vm._data.commonStyle || undefined
     const element = new Element(vm.$options)
     console.log(element);
     state.editingPage.elements.push(element)

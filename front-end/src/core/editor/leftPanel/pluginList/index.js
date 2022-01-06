@@ -21,7 +21,7 @@ export default {
   render() {
     return (
       <div style="position: relative;">
-        <el-row gutter={20} style="height: calc(100vh - 175px);overflow: scroll;">
+        <el-row gutter={20} style="height: calc(100vh - 120px);overflow-y: scroll;">
           {[].concat(this.pluginsList, this.pluginOptionArr).filter(item => item.visible).map(plugin => (
             <el-col span={12} style='margin-top: 10px;'>
               <PluginButton

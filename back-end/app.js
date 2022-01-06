@@ -8,7 +8,7 @@ const logger = require('koa-logger')
 const cors = require('koa-cors')
 const template = require("koa-html-template")
 
-const { routerResponse, initController, initRouter } = require('./initRouterControllers');
+const { routerResponse, initRouterControllersAsync } = require('./initRouterControllers');
 
 // error handler
 onerror(app)
@@ -49,12 +49,9 @@ app.use(routerResponse())
 // const v2Router = router().use('/v2', v2)
 // app.use(v2Router.routes(), v2Router.allowedMethods())
 
-// initRouterControllers(app)
-let controlles = {}
-initController(controlles);
-let router = initRouter(controlles)
-
-app.use(router.routes(), router.allowedMethods());
+initRouterControllersAsync().then((router) => {
+  app.use(router.routes(), router.allowedMethods());
+})
 
 // error-handling
 app.on('error', (err, ctx) => {

@@ -11,6 +11,7 @@ export default {
     }
   },
   data: () => ({
+    collapseActive: [1],
     loadCustomEditorFlag: false,
     editorPositionConfig: [
       { type: 'el-input', label: '上', key: 'top' },
@@ -81,7 +82,7 @@ export default {
     const vm = getVM(this.editingElement.name)
     const props = vm.$options.props
     return (
-      <el-collapse value={[1]}>
+      <el-collapse class="right_prop_collapse" vModel={this.collapseActive}>
         <el-collapse-item name={0} title="通用样式">
           {
             this.stateEditingElement ? this.renderEditorPositionConfig(h) : ''

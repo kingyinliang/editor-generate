@@ -63,7 +63,7 @@ export default {
   },
   render(){
     return(
-      <el-aside width="40px" style="background: #fff; border: 1px solid #eee">
+      <el-aside width="40px" style="overflow: hidden;background: #fff; border: 1px solid #eee">
         <el-button-group class='tools_button_group'>
           {
             toolsOption.map(tool => (

@@ -49,6 +49,7 @@ const defaultStyle = {
     }
   },
   border: {
+    radius: [0,0,0,0],
     top: {
       value: 0,
       unit: 'px'
@@ -94,11 +95,12 @@ class Element {
   }
 
   packBorderData () {
-    const { top, right, bottom, left, color, style } = this.commonStyle.border || defaultStyle.border
+    const { top, right, bottom, left, color, style, radius } = this.commonStyle.border || defaultStyle.border
     return {
-      'border-width': `${top.value}${top.unit} ${right.value}${right.unit} ${bottom.value}${bottom.unit} ${left.value}${left.unit} `,
-      'border-style': style.value,
-      'border-color': color.value
+      'border-radius': `${radius[0]}px ${radius[1]}px ${radius[2]}px ${radius[3]}px`,
+      'border-width': `${top?.value||0}${top?.unit||''} ${right?.value||0}${right?.unit||''} ${bottom?.value||0}${bottom?.unit||''} ${left?.value||0}${left?.unit||''} `,
+      'border-style': style?.value || 'solid',
+      'border-color': color?.value || '#000'
     }
   }
 
@@ -136,10 +138,29 @@ class Element {
 
   getCommonStyle(ele) {
     if (typeof ele.commonStyle === 'object') {
-      return cloneObj(ele.commonStyle)
+      let commonStyle = {
+        ...cloneObj(defaultStyle),
+        margin: {
+          ...cloneObj(defaultStyle.margin),
+          ...cloneObj(ele.commonStyle.margin || {})
+        },
+        padding: {
+          ...cloneObj(defaultStyle.padding),
+          ...cloneObj(ele.commonStyle.padding || {})
+        },
+        border: {
+          ...cloneObj(defaultStyle.border),
+          ...cloneObj(ele.commonStyle.border || {})
+        }
+      }
+      return {
+        ...commonStyle,
+        zindex: ele.zindex || 0,
+        ...ele.dragStyle
+      }
     }
     return {
-      ...defaultStyle,
+      ...cloneObj(defaultStyle),
       zindex: ele.zindex || 0,
       ...ele.dragStyle // 拖拽结束落点的top、left
     }

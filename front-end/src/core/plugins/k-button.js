@@ -27,12 +27,21 @@ export default {
     backgroundColor: PropTypes.color({ label: '背景色', defaultValue: '#ffffff' }),
     backgroundImg: PropTypes.upload({label: '背景图'}),
     fontSize: PropTypes.number({ label: '字号(px)' }),
-    borderWidth: PropTypes.number({ label: '边框宽度(px)', defaultValue: 1 }),
-    borderRadius: PropTypes.number({ label: '圆角(px)', defaultValue: 5 }),
-    borderColor: PropTypes.color({ label: '边框颜色', defaultValue: '#ced4da' }),
     textAlign: PropTypes.radio({ defaultValue: 'center', label: '文字对齐', options: textAlignOptions}),
     submitText: PropTypes.input({ defaultValue: '提交成功', label: '提交文字' }),
   },
+  data: () => ({
+    commonStyle: {
+      border: {
+        radius: [5, 5, 5, 5],
+        top: { value: 1, unit: 'px' },
+        right: { value: 1, unit: 'px' },
+        bottom: { value: 1, unit: 'px' },
+        left: { value: 1, unit: 'px' },
+        color: { value: '#ced4da' }
+      }
+    }
+  }),
   methods: {
     handleClick(){
       if (this.disabled) return
@@ -58,10 +67,7 @@ export default {
     let style = {
       color: this.color,
       textAlign: this.textAlign,
-      fontSize: this.fontSize + 'px',
-      borderColor: this.borderColor,
-      borderRadius: this.borderRadius + 'px',
-      borderWidth: this.borderWidth + 'px',
+      fontSize: this.fontSize + 'px'
     }
     if (this.backgroundImg) {
       style = {

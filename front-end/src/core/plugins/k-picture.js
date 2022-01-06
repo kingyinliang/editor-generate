@@ -14,7 +14,8 @@ export default {
     imgSrc: PropTypes.upload({label: '图片'}),
     fitType: PropTypes.select({defaultValue: 'contain', label: '填充方式', options})
   },
-  data: () => ({}),
+  data: () => ({
+  }),
   render() {
     return (
       <img src={this.imgSrc} style={{objectFit: this.fitType}}/>

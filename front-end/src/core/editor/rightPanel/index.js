@@ -16,7 +16,7 @@ export default {
   }),
   render() {
     return (
-      <el-aside width={this.width+'px'} style="background: #fff;padding: 0 12px">
+      <el-aside class="right" width={this.width+'px'} style="background: #fff;padding: 0 12px">
         <el-tabs vModel={this.activeName}>
           <el-tab-pane label={this.$t('editor.editPanel.tab.prop')} name="prop">
             <PropEditor/>

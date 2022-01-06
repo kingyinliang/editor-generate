@@ -20,9 +20,32 @@
       <PositionCheckbox label="右" label-key="right" />
     </div>
     <PositionCheckbox label="下" label-key="bottom" />
-    <div v-if="isEditingBorder" style="margin: 20px;">
-      <span> 设置border-color </span>
-      <el-color-picker size="small" :value="borderColor" @change="onColorChange"/>
+    <div v-if="isEditingBorder" style="display: flex">
+      <div style="line-height: 32px;display: flex;margin-right: 4px;">
+        <span>边框颜色：</span>
+        <el-color-picker size="mini" :value="borderColor" @change="onColorChange"/>
+      </div>
+      <div style="line-height: 32px;display: flex;flex: 1">
+        <span>边框样式：</span>
+        <el-select :value="borderStyle" style="flex: 1" @change="onStyleChange" size="mini" >
+          <el-option v-for="(item,index) in borderStyleOptions" :key="index" :value="item.value">
+            {{ item.label }}
+          </el-option>
+        </el-select>
+      </div>
+    </div>
+    <div v-if="isEditingBorder" style="display: flex;line-height: 32px;">
+      <span>圆角：</span>
+      <el-input
+        v-for="(item, index) in borderRadius"
+        :key="index"
+        :value="item"
+        type="number"
+        size="mini"
+        style="width:60px"
+        :min="0"
+        @input="(e) => { onRadiusChange(e, index) }"
+      />
     </div>
   </div>
 </template>
@@ -36,6 +59,34 @@
     components: {
       PositionCheckbox
     },
+    data: ()=>({
+      borderStyleOptions: [
+        {
+          label: '无',
+          value: 'none'
+        },
+        {
+          label: '实线',
+          value: 'solid'
+        },
+        {
+          label: '双线',
+          value: 'double'
+        },
+        {
+          label: '虚线',
+          value: 'dashed'
+        },
+        {
+          label: '点状边框',
+          value: 'dotted'
+        },
+        {
+          label: '3D 凹槽边框',
+          value: 'groove'
+        },
+      ]
+    }),
     computed: {
       ...mapState('editor', {
         editingElement: state => state.editingElement
@@ -49,6 +100,12 @@
       },
       borderColor () {
         return this.commonStyle?.border.color.value || ''
+      },
+      borderStyle () {
+        return this.commonStyle?.border.style.value || ''
+      },
+      borderRadius () {
+        return this.commonStyle?.border.radius || []
       },
       isEditingBorder () {
         return this.boxModelPart === 'border'
@@ -68,6 +125,19 @@
         this.setElementPosition({
           boxModelPart: type
         })
+      },
+      onStyleChange(style) {
+        const boxModelPart = this.boxModelPart
+        const boxModelPartStyle = this.editingElement.commonStyle[boxModelPart]
+        Object.assign(boxModelPartStyle.style, { value: style })
+        this.setElementPosition({ [boxModelPart]: boxModelPartStyle })
+      },
+      onRadiusChange(radius, index) {
+        console.log(radius);
+        const boxModelPart = this.boxModelPart
+        const boxModelPartStyle = this.editingElement.commonStyle[boxModelPart]
+        boxModelPartStyle.radius[index] = radius
+        this.setElementPosition({ [boxModelPart]: boxModelPartStyle })
       },
       onColorChange (color) {
         const boxModelPart = this.boxModelPart
