@@ -86,12 +86,21 @@ class Element {
     this.commonStyle = this.getCommonStyle(ele)
     this.animations = ele.animations || []
 
+    this.script = ele.script || []
+    this.methodList = ele.methodList || []
+
     this.registerGlobalComponent()
   }
 
   getEventHandlers() {
-    // const Ctor = Vue.component(`${this.name}_${this.uuid}`)
-    return []
+    const Ctor = Vue.component(this.uuid,)
+    const vm = new Ctor()
+    // vm.$props = { ...this.getProps({ mode: 'preview' }) }
+    const handlers = this.methodList.reduce((handlers, method) => {
+      handlers[method.trigger] = () => vm[method.fnName].apply(vm)
+      return handlers
+    }, {})
+    return handlers
   }
 
   packPosData (obj, prefix) {
@@ -186,6 +195,7 @@ class Element {
     if (typeof ele.commonStyle === 'object') {
       let commonStyle = {
         ...cloneObj(defaultStyle),
+        ...cloneObj(ele.commonStyle),
         margin: {
           ...cloneObj(defaultStyle.margin),
           ...cloneObj(ele.commonStyle.margin || {})
@@ -252,9 +262,18 @@ class Element {
   }
 
   registerGlobalComponent() {
-    const basePlugin = Vue.component(this.name)
+    let baseComponent = Vue.component(this.name)
+    const mixinList = this.script.map(script => {
+      return new Function(script)()
+    })
 
-    Vue.component(this.uuid, basePlugin)
+    baseComponent && baseComponent.extend({props: this.getProps({ mode: 'preview' })})
+
+    baseComponent = mixinList.reduce((componentOption, mixin) => {
+      return componentOption.extend(mixin)
+    }, baseComponent)
+
+    Vue.component(this.uuid, baseComponent)
   }
 
 }

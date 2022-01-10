@@ -4,6 +4,9 @@ import DialogCanvas from 'core/preview/dialog_canvas.js'
 import { pluginsList } from 'core/plugins'
 import DataSource from 'core/models/data-source'
 import KComponents from 'k-generate-components'
+import Element from 'core/models/element'
+import Page from 'core/models/page'
+import Dialog from 'core/models/dialog'
 
 import '@/assets/scss/index.scss';
 import '@/assets/scss/editor.scss'
@@ -17,7 +20,15 @@ const Engine = {
     DataSource.dispatchRequest(window.__work)
   },
   render(){
-    const work = window.__work
+    let work = window.__work;
+    work.pages = work.pages.map(page => {
+      page.elements = page.elements.map(element => new Element(element))
+      return new Page(page)
+    })
+    work.dialog = work.dialog.map(dialog => {
+      dialog.elements = dialog.elements.map(element => new Element(element))
+      return new Dialog(dialog)
+    })
     return (
       <div class='work_container'>
         <PreviewCanvas elements={work.pages[0].elements} height={work.pages[0].height}/>

@@ -26,14 +26,14 @@ export default {
       <div style={pageWrapperStyle}>
         {
           this.elements.map((el) => {
-            console.log(el);
+            const { top, left, width, height, position } = el.getStyle({position: 'absolute'})
+            const zIndex = el.getStyle({position: 'absolute'})['z-index']
             return (
-              <ElementItem element={el} style={el.getStyle({position: 'absolute'})}>
+              <ElementItem element={el} style={{top, left, width, height, position, 'z-index': zIndex}}>
                 {
                   this.$createElement(el.uuid,
                     {
-                      ...el.getPreviewData({position: 'static'}),
-                      nativeOn: this.genEventHandlers(el)
+                      ...el.getPreviewData()
                     }
                   )
                 }
