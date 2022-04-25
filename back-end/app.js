@@ -2,13 +2,16 @@ const Koa = require('koa')
 const app = new Koa()
 const views = require('koa-views')
 const json = require('koa-json')
+const jwt = require('koa-jwt')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const cors = require('koa-cors')
 const template = require("koa-html-template")
 
-const { routerResponse, initRouterControllersAsync } = require('./initRouterControllers');
+const initSwagger = require('./utils/swagger')
+const { tokenConfig } = require('./config/config')
+const { routerResponse, initRouterControllersAsync } = require('./utils/initRouterControllers');
 
 // error handler
 onerror(app)
@@ -42,19 +45,39 @@ app.use(async (ctx, next) => {
 
 app.use(routerResponse())
 
+// error
+app.use(async (ctx, next) => {
+  try {
+    await next()
+  } catch (e) {
+    if (e.status === 401) {
+      ctx.fail('token 无效，请重新登陆', 401)
+    } else {
+      ctx.fail(e, 500)
+    }
+    console.error('server error', e)
+  }
+})
 
-// routes
-// const v1Router = router().use('/v1', v1)
-// app.use(v1Router.routes(), v1Router.allowedMethods())
-// const v2Router = router().use('/v2', v2)
-// app.use(v2Router.routes(), v2Router.allowedMethods())
+// jwt
+app.use(jwt({
+  secret: tokenConfig.privateKey,
+  getToken: tokenConfig.getToken
+}).unless({
+  path: tokenConfig.unless
+}))
 
+// Swagger
+initSwagger(app)
+
+// Router
 initRouterControllersAsync().then((router) => {
   app.use(router.routes(), router.allowedMethods());
 })
 
 // error-handling
 app.on('error', (err, ctx) => {
+  ctx.fail(err, 500)
   console.error('server error', err, ctx)
 });
 

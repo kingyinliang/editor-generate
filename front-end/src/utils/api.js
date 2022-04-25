@@ -2,6 +2,13 @@ import router from '@/router.js'
 import Work from 'core/models/work.js'
 import Http from './axios'
 
+export function login(data) {
+  return Http.post('/user/login', data)
+}
+export function register(data) {
+  return Http.post('/user/register', data)
+}
+
 export function createWork() {
   Http.post('/work/insert', new Work()).then(({data}) => {
     const routeData = router.resolve({name: 'editor', params: {workId: data.data.id}})

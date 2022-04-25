@@ -1,5 +1,5 @@
 const Mysql = require('mysql');
-const dbConfig = require('../config/db');
+const { dbConfig } = require('../config/config');
 
 // 创建数据库连接
 const pool = Mysql.createPool(dbConfig);
@@ -22,3 +22,4 @@ exports.query = (sql, val) => {
         })
     })
 }
+exports.escape = Mysql.escape
