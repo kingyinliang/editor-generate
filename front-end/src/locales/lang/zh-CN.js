@@ -8,6 +8,19 @@ export default {
     chat: '交流群', //  Discussion Group
     logout: '退出登录'
   },
+  publish: {
+    title: '标题',
+    description: '描述',
+    publish: '是否发布',
+    yes: '是',
+    no: '否',
+    created: '创建时间',
+    updated: '更新时间',
+  },
+  button: {
+    confirm: '确认',
+    cancel: '取消',
+  },
   sidebar: {
     myWorks: '我的作品',
     dataCenter: '数据中心',

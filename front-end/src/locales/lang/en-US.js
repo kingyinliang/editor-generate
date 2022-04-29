@@ -8,6 +8,19 @@ export default {
     chat: 'Discussion Group', //
     logout: 'Logout'
   },
+  publish: {
+    title: 'Title',
+    description: 'Description',
+    publish: 'Publish',
+    yes: 'Yes',
+    no: 'No',
+    created: 'Creation time',
+    updated: 'Update  time',
+  },
+  button: {
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+  },
   sidebar: {
     myWorks: 'My Works',
     dataCenter: 'Data Center',

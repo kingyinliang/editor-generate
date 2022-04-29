@@ -7,6 +7,9 @@
     </div>
     <div class="right">
       <div style="float: right;margin-left: 45px">
+        <user-dropdown/>
+      </div>
+      <div style="float: right;margin-left: 45px">
         <Lang-select/>
       </div>
       <div style="float: right">
@@ -18,11 +21,13 @@
 
 <script>
   import LangSelect from './LangSelect'
+  import UserDropdown from './userDropdown'
 
   export default {
     name: "index",
     components: {
-      LangSelect
+      LangSelect,
+      UserDropdown
     }
   }
 </script>

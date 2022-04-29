@@ -1,4 +1,4 @@
-
+const dayjs = require('dayjs')
 const db = require('../../db')
 
 const escapeReg = {'\\': '&slash;', '\'': '&squot;'}
@@ -57,6 +57,8 @@ const query = async ctx => {
       work[0].pages = JSON.parse(escapeStr(work[0].pages || '[]'))
       work[0].datasources = JSON.parse(escapeStr(work[0].datasources || '[]'))
       work[0].dialog = JSON.parse(escapeStr(work[0].dialog || '[]'))
+      work[0].created_at = dayjs(work[0].created_at).format('YYYY-MM-DD HH:mm:ss')
+      work[0].updated_at = dayjs(work[0].updated_at).format('YYYY-MM-DD HH:mm:ss')
       ctx.success({
         work: work[0]
       })
@@ -70,6 +72,8 @@ const query = async ctx => {
       work.pages = JSON.parse(escapeStr(work.pages || '[]'))
       work.datasources = JSON.parse(escapeStr(work.datasources || '[]'))
       work.dialog = JSON.parse(escapeStr(work.dialog || '[]'))
+      work.created_at = dayjs(work.created_at).format('YYYY-MM-DD HH:mm:ss')
+      work.updated_at = dayjs(work.updated_at).format('YYYY-MM-DD HH:mm:ss')
     })
     ctx.success({
       works
@@ -147,7 +151,7 @@ const update = async ctx => {
   let pages = strEscape(JSON.stringify(params.pages))
   let datasources = strEscape(JSON.stringify(params.datasources))
   const sql = `update works set
-        title='${params.title}',is_template=${params.is_template},description='${params.description}',dialog='${JSON.stringify(params.dialog)}',pages='${pages}',datasources='${datasources}'
+        title='${params.title}',is_template=${params.is_template},is_publish=${params.is_publish},description='${params.description}',dialog='${JSON.stringify(params.dialog)}',pages='${pages}',datasources='${datasources}'
         where id=${params.id}`
   let works = await db.query(sql)
   ctx.success({

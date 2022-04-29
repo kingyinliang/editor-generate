@@ -9,7 +9,7 @@ export default {
         <el-button size="mini" onClick={()=>{this.$emit('save')}}>
           {this.$t('editor.header.save')}
         </el-button>
-        <el-button size="mini">
+        <el-button size="mini" onClick={()=>{this.$emit('publish')}}>
           {this.$t('editor.header.publish')}
         </el-button>
       </div>

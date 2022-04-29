@@ -22,6 +22,7 @@ import EditorCanvas from 'core/editor/canvas'
 import FixedTools from 'core/editor/tools'
 import DragLine from 'core/mixins/drag/drag_line.js'
 import PreviewDialog from 'core/preview/preview_dialog.js'
+import PublishDialog from 'core/preview/publish_dialog.js'
 
 window.EditorApp = new Vue() // event bus
 
@@ -43,7 +44,8 @@ const CoreEditor = {
   data() {
     return {
       width: 320,
-      previewDialogVisible: false
+      previewDialogVisible: false,
+      publishDialogVisible: false
     }
   },
   created () {
@@ -72,6 +74,7 @@ const CoreEditor = {
       'setEditingPage'
     ]),
     handlePreview () { this.previewDialogVisible = true },
+    handlePublish () { this.publishDialogVisible = true },
     save(){
       updateWorks(this.work).then(({data}) => {
         if(data.code === 200) {
@@ -88,7 +91,7 @@ const CoreEditor = {
       <el-container style={{height: '100vh'}}>
         <el-header style="background-color: #031529;">
           <Header>
-            <HeaderMenu slot="headr_menu" onPreview={this.handlePreview} onSave={this.save}/>
+            <HeaderMenu slot="headr_menu" onPreview={this.handlePreview} onSave={this.save} onPublish={this.handlePublish} />
           </Header>
         </el-header>
         <el-container>
@@ -106,6 +109,7 @@ const CoreEditor = {
           <EditorRightPanel width={this.width}/>
         </el-container>
         <PreviewDialog visible={this.previewDialogVisible} work={this.work}  {...{on: {'update:visible': val => {this.previewDialogVisible = val}}}}/>
+        <PublishDialog visible={this.publishDialogVisible} onSave={this.save}  {...{on: {'update:visible': val => {this.publishDialogVisible = val}}}}/>
       </el-container>
     )
   }
