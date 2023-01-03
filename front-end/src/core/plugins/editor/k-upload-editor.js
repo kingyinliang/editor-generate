@@ -1,3 +1,5 @@
+import Http from '@/utils/axios'
+
 export default {
   name: 'k-upload-editor',
   props: {
@@ -5,25 +7,24 @@ export default {
     default: '',
   },
   data: ()=>({
-    fileReader: {}
   }),
   mounted(){
-    this.fileReader = new FileReader();
+    this.$refs.imgUpload && this.$refs.imgUpload.clearFiles();
   },
   methods: {
     httpRequest(options){
       const file = options.file;
-      if (file) {
-        this.fileReader.readAsDataURL(file);
-      }
-      this.fileReader.onload = () => {
-        const base64Str = this.fileReader.result;
-        options.onSuccess(base64Str.split(',')[1], file);
-      };
+      const formData = new FormData()
+      formData.append('file', file)
+      Http.post('/upload/picture', formData).then(({ data }) => {
+        options.onSuccess(data.data);
+      }).catch(({ data }) => {
+        options.onError(data.msg)
+      })
     },
     success(res){
-      res = 'data:image/gif;base64,' + res
-      this.$emit('change', res)
+      this.$emit('change', res.url)
+      this.$refs.imgUpload.clearFiles();
     },
     removeFile(){
       this.$refs.imgUpload.clearFiles();

@@ -6,6 +6,13 @@ export default {
       default: () => ''
     }
   },
+  watch: {
+    value (val) {
+      if (val) {
+        this.inputVal = this.value
+      }
+    }
+  },
   data: () => ({
     inputVal: ''
   }),
@@ -29,6 +36,7 @@ export default {
         size="small"
         style="flex: 1; margin-left: 15px;"
         onChange={newColorString => {
+          console.log(newColorString);
           this.$emit('change', newColorString)
         }}
       />

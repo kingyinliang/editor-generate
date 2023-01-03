@@ -1,4 +1,5 @@
-import axios from 'axios'
+import Http from '@/utils/axios'
+
 import DS_ENUM, { REFRESH_ENUM, REFRESH_DEFAULT_INTERVAL } from 'core/editor/leftPanel/dataSourceManager/config'
 
 export default class DataSource {
@@ -25,7 +26,7 @@ export default class DataSource {
     const ds = this
     return new Promise((resolve) => {
       ds.loading = true
-      axios(ds.url).then(response => {
+      Http.get(ds.url).then(response => {
         ds.updated = +new Date()
         ds.loading = false
         const storage = {

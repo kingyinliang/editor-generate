@@ -43,6 +43,7 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
+// Response
 app.use(routerResponse())
 
 // error

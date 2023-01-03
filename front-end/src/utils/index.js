@@ -43,14 +43,17 @@ function _getVMVal (vm, exp) {
     return 'error'
   }
 }
-export function bindData (obj) {
+export function bindData (element) {
   const reg = /\{\{(.*?)\}\}/g
-  const objStr = JSON.stringify(obj)
+  const objStr = JSON.stringify(element.pluginProps)
+  const Ctor = Vue.component(element.uuid,)
+  // const vm = new Ctor()
   const newObjStr = objStr.replace(reg, (match, exp) => {
     // exp = exp.trim().replace(/\[(\w+)\]/g, '.$1')
     exp = exp.trim().replace(/^\./, '')
     if (/DS\./.test(exp)) {
       // return getVMVal(DS, exp)
+      console.log(DS.DS, exp);
       let value = _getVMVal(DS.DS, exp)
       if (typeof value !== 'string') {
         value = JSON.stringify(value)
@@ -61,6 +64,11 @@ export function bindData (obj) {
       } else {
         return value
       }
+    } else if (Ctor) {
+      const vm = new Ctor()
+      console.log(vm, element.uuid);
+      console.log(_getVMVal(vm, exp));
+      
     }
     return exp
   })

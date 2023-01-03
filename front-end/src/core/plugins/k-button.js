@@ -24,7 +24,7 @@ export default {
     text: PropTypes.input({defaultValue: '按钮', label: '按钮文字'}),
     disabled: PropTypes.boolean({ label: 'disabled' }),
     color: PropTypes.color({ label: '字体颜色', defaultValue: '#000' }),
-    backgroundColor: PropTypes.color({ label: '背景色', defaultValue: '#ffffff' }),
+    background: PropTypes.color({ label: '背景色', defaultValue: '#ffffff' }),
     backgroundImg: PropTypes.upload({label: '背景图'}),
     fontSize: PropTypes.number({ label: '字号(px)' }),
     textAlign: PropTypes.radio({ defaultValue: 'center', label: '文字对齐', options: textAlignOptions}),
@@ -80,7 +80,7 @@ export default {
     } else {
       style = {
         ...style,
-        backgroundColor: this.backgroundColor
+        background: this.background
       }
     }
     return (

@@ -138,6 +138,7 @@ export default {
   methods:{
     mixinPlugins2Editor () {
       pluginsList.forEach(plugin => {
+        console.log(plugin);
         Vue.component(plugin.name, plugin.component)
       })
     }

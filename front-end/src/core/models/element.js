@@ -154,7 +154,7 @@ class Element {
   }
 
   getProps ({ mode = 'edit' } = {}) {
-    const pluginProps = mode === 'preview' ? bindData(this.pluginProps) : this.pluginProps
+    const pluginProps = mode === 'preview' ? bindData(this) : this.pluginProps
     if (mode === 'edit') {
       return {
         ...pluginProps,

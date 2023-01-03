@@ -76,7 +76,11 @@ const initRouterControllersAsync = async () => {
     Object.keys(routes).forEach(key =>{
       const [method, path] = key.split(' ');
       console.log(`正在映射地址: ${method.toLocaleUpperCase()}  ${prefix}${path}`);
-      router[method](prefix + path, routes[key]);
+      if (routes[key] instanceof Array) {
+        router[method](prefix + path, ...routes[key]);
+      } else {
+        router[method](prefix + path, routes[key]);
+      }
     })
   })
   return router
